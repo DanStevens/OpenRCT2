@@ -23,6 +23,7 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
+#include <openrct2/Context.cpp>
 
 // Monthly research funding costs
 const money32 research_cost_table[RESEARCH_FUNDING_COUNT] = {
@@ -79,13 +80,28 @@ bool finance_check_affordability(money32 cost, uint32_t flags)
 }
 
 /**
- * Pay an amount of money.
+ * Pay an amount of money, which is deducted from park cash.
  *  rct2: 0x069C674
- * @param amount (eax)
+ * @param amount (eax) to deduct. Negative values will increase park cash balance.
  * @param type passed via global var 0x0141F56C (RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE), our type is that var/4.
  */
 void finance_payment(money32 amount, ExpenditureType type)
 {
+#ifdef ENABLE_SCRIPTING
+    auto& scriptEngine = GetContext()->GetScriptEngine();
+    auto& hookEngine = scriptEngine.GetHookEngine();
+
+    if (hookEngine.HasSubscriptions(HOOK_TYPE::PARK_FINANCE_PAYMENT))
+    {
+        auto e = scriptEngine.CreatePaymentEventArgDuk(amount, type);
+        hookEngine.Call(HOOK_TYPE::PARK_FINANCE_PAYMENT, e, true);
+
+        // Allow scripts to modify amount
+        auto scriptAmount = AsOrDefault(e["amount"], static_cast<int32_t>(amount));
+        amount = std::clamp<int32_t>(scriptAmount, INT32_MIN, INT32_MAX);
+    }
+#endif
+
     // overflow check
     gCash = add_clamp_money32(gCash, -amount);
 
