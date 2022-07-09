@@ -51,6 +51,9 @@ const char gVersionInfoFull[] = OPENRCT2_NAME ", "
 #ifdef OPENRCT2_BUILD_SERVER
                                               " provided by " OPENRCT2_BUILD_SERVER
 #endif
+#ifdef OPENRCT2_FORK
+                                              " fork by " OPENRCT2_FORK
+#endif
     ;
 
 NewVersionInfo get_latest_version()

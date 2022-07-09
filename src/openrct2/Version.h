@@ -15,6 +15,7 @@
 
 #define OPENRCT2_NAME "OpenRCT2"
 #define OPENRCT2_VERSION "0.4.1"
+#define OPENRCT2_FORK "Dan Stevens"
 
 #if defined(__amd64__) || defined(_M_AMD64)
 #    define OPENRCT2_ARCHITECTURE "x86-64"
