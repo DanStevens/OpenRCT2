@@ -242,6 +242,7 @@ namespace OpenRCT2::Scripting
         void RunGameActionHooks(const GameAction& action, GameActions::Result& result, bool isExecute);
         [[nodiscard]] std::unique_ptr<GameAction> CreateGameAction(const std::string& actionid, const DukValue& args);
         DukValue CreatePaymentEventArgDuk(money32 amount, ExpenditureType type);
+        DukValue CreateRideUpkeepCalculateArgsDuk(RideId ride, uint32_t upkeep);
 
         void SaveSharedStorage();
 

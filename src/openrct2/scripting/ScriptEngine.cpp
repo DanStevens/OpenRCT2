@@ -1486,6 +1486,23 @@ DukValue ScriptEngine::CreatePaymentEventArgDuk(money32 amount, ExpenditureType 
     return obj.Take();
 }
 
+/**
+ * Creates a DukObject for representing the `RideUpkeepCalculateArgs` object for the "ride.upkeep.calculate" API hook
+ * @param amount to deduct. Use negative values for income.
+ * @param type The ExpenditureType. This includes income.
+ */
+DukValue ScriptEngine::CreateRideUpkeepCalculateArgsDuk(RideId ride, uint32_t upkeep)
+{
+    DukObject obj(_context);
+
+    if (!ride.IsNull())
+    {
+        obj.Set("ride", ride.ToUnderlying());
+    }
+
+    obj.Set("upkeep", upkeep);
+    return obj.Take();
+}
 void ScriptEngine::InitSharedStorage()
 {
     duk_push_object(_context);

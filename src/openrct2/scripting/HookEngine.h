@@ -44,6 +44,7 @@ namespace OpenRCT2::Scripting
         MAP_CHANGED,
         MAP_SAVE,
         PARK_FINANCE_PAYMENT,
+        RIDE_UPKEEP_CALCULATE,
         COUNT,
         UNDEFINED = -1,
     };
